@@ -1,0 +1,388 @@
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --button-bg: rgba(255, 255, 255, 0.1);
+    --button-hover: rgba(255, 255, 255, 0.2);
+    --button-active: rgba(255, 255, 255, 0.3);
+    --text-color: #ffffff;
+    --operation-color: #64ffda;
+    --equals-color: #03dac6;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Updates for body and container to improve layout */
+body {
+    min-height: 100vh; /* Using min-height instead of height */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(45deg, #121212, #353535);
+    overflow-x: hidden; /* Allow vertical scrolling if needed */
+    position: relative;
+    padding: 20px; /* Add padding to prevent content from touching edges */
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.8) 70%);
+    z-index: 0;
+}
+
+/* Updates for body and container to improve layout */
+.container {
+    position: relative;
+    z-index: 1;
+    perspective: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px; /* Set max width for large screens */
+}
+
+.calculator {
+    width: 320px;
+    border-radius: 20px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transform: rotateX(10deg) rotateY(0deg);
+    transition: transform 0.5s ease;
+}
+
+.calculator:hover {
+    transform: rotateX(5deg) rotateY(0deg) translateZ(10px);
+}
+
+.calculator-screen {
+    width: 100%;
+    padding: 20px;
+    text-align: right;
+    color: var(--text-color);
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--glass-border);
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+.previous-operand {
+    font-size: 1.2rem;
+    opacity: 0.7;
+    height: 24px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.current-operand {
+    font-size: 2.5rem;
+    font-weight: 300;
+    height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Modified grid to accommodate more buttons */
+.calculator-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 16px;
+}
+
+button {
+    height: 60px;
+    border: none;
+    border-radius: 12px;
+    background: var(--button-bg);
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    outline: none;
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0) 50%
+    );
+    pointer-events: none;
+}
+
+button:hover {
+    background: var(--button-hover);
+    transform: translateY(-3px) translateZ(5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+    background: var(--button-active);
+    transform: translateY(0px) translateZ(0);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.span-two {
+    grid-column: span 2;
+}
+
+.operation {
+    color: var(--operation-color);
+    font-weight: 400;
+    background: rgba(100, 255, 218, 0.1);
+}
+
+.equals {
+    background: rgba(3, 218, 198, 0.2);
+    color: var(--equals-color);
+}
+
+/* Error animation */
+.error {
+    animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    20%, 60% {
+        transform: translateX(-5px);
+    }
+    40%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+/* 3D press effect */
+.button-pressed {
+    transform: translateY(2px) translateZ(-2px) !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+    transition: transform 0.1s, box-shadow 0.1s !important;
+}
+
+/* Responsive design */
+@media (max-width: 375px) {
+    .calculator {
+        width: 280px;
+    }
+    
+    .calculator-buttons {
+        gap: 6px;
+        padding: 12px;
+    }
+    
+    button {
+        height: 45px;
+        font-size: 1.1rem;
+    }
+    
+    .current-operand {
+        font-size: 2rem;
+        height: 50px;
+    }
+    
+    .previous-operand {
+        font-size: 1rem;
+        height: 20px;
+    }
+    
+    .calculator-footer {
+        margin-top: 20px;
+    }
+}
+
+/* Updated footer styles for consistent positioning */
+.calculator-footer {
+    margin-top: 20px; /* Adjusted margin as there's no history button anymore */
+    margin-bottom: 10px;
+    text-align: center;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    width: 100%;
+    position: relative;
+}
+
+.footer-text {
+    font-size: 1rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: var(--text-color);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3),
+                 0 4px 8px rgba(0, 0, 0, 0.2);
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: inline-block;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transform: rotateX(10deg) translateZ(10px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer-text::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    animation: shine 3s infinite;
+}
+
+.footer-text:hover {
+    transform: rotateX(5deg) translateZ(15px);
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4),
+                 0 8px 16px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15),
+                0 0 10px var(--equals-color);
+    color: var(--equals-color);
+}
+
+@keyframes shine {
+    0% {
+        left: -100%;
+    }
+    20% {
+        left: 100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+/* Responsive design for footer */
+@media (max-width: 375px) {
+    .calculator-footer {
+        margin-top: 15px;
+    }
+    
+    .footer-text {
+        font-size: 0.85rem;
+        padding: 8px 16px;
+    }
+}
+
+/* Additional responsive adjustments for various screen sizes */
+@media (max-height: 700px) {
+    .calculator-footer {
+        margin-top: 15px;
+        margin-bottom: 5px;
+    }
+    
+    .footer-text {
+        padding: 6px 15px;
+        font-size: 0.9rem;
+    }
+}
+
+/* For very small screens */
+@media (max-height: 600px) {
+    .calculator {
+        transform: scale(0.9);
+        margin-bottom: -15px;
+    }
+    
+    .calculator-footer {
+        margin-top: 0;
+    }
+}
+
+/* Floating background elements */
+.container::before,
+.container::after {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #ff6b6b, #6b66ff);
+    filter: blur(50px);
+    opacity: 0.1;
+    z-index: -1;
+    animation: float 8s infinite alternate ease-in-out;
+}
+
+.container::before {
+    top: -100px;
+    right: -50px;
+    animation-delay: 0s;
+}
+
+.container::after {
+    bottom: -100px;
+    left: -50px;
+    background: linear-gradient(45deg, #6bffd8, #6ba1ff);
+    animation-delay: 2s;
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(20px, 20px);
+    }
+}
+
+/* Toast notification for feedback */
+.calculator-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    color: var(--equals-color);
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    font-size: 0.9rem;
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.3s ease;
+    text-align: center;
+    border: 1px solid var(--equals-color);
+}
+
+.calculator-toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}

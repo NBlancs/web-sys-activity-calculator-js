@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Glass Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="calculation.png">
+</head>
+<body>
+    <div class="container">
+        <div class="calculator">
+            <div class="calculator-screen">
+                <div class="previous-operand"></div>
+                <div class="current-operand">0</div>
+            </div>
+            <div class="calculator-buttons">
+                <button class="span-two operation" data-action="clear">AC</button>
+                <button class="operation" data-action="delete">DEL</button>
+                <button class="operation" data-operation="÷">÷</button>
+                <button class="span-two operation" data-operation="%">%</button>
+                <button class="span-two operation" data-operation="^">x<sup>y</sup></button>
+                <button data-number="7">7</button>
+                <button data-number="8">8</button>
+                <button data-number="9">9</button>
+                <button class="operation" data-operation="×">×</button>
+                <button data-number="4">4</button>
+                <button data-number="5">5</button>
+                <button data-number="6">6</button>
+                <button class="operation" data-operation="-">-</button>
+                <button data-number="1">1</button>
+                <button data-number="2">2</button>
+                <button data-number="3">3</button>
+                <button class="operation" data-operation="+">+</button>
+                <button class="span-two" data-number="0">0</button>
+                <button data-number=".">.</button>
+                <button class="operation equals" data-action="calculate">=</button>
+            </div>
+            <footer class="calculator-footer">
+                <div class="footer-text">Nblancs | 2025</div>
+            </footer>
+        </div>        
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
